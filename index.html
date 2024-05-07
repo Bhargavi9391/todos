@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css" rel="stylesheet">
+    <title>To-Do-List</title>
+    <style>
+        .container {
+            margin-top: 50px;
+            text-align: center;
+           background-color:#f5f9fd ;
+            
+        }
+        h1 {
+            font-size: 40px;
+            margin-top: 110px;
+            font-family: sans-serif;
+            text-transform: capitalize;
+        }
+        .bold {
+    font-weight: bold; 
+    color: #000; 
+}
+
+.lighter {
+    font-weight: normal; 
+    color:#332e2e ; 
+}
+
+        .inputs {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .inputs h2 {
+            font-family: sans-serif;
+            font-size: 33px;
+            text-transform: capitalize;
+            margin-top:10px;
+        }
+        .inputs input[type="text"] {
+            width: 100%;
+            height: 40px;
+            border-radius: 6px;
+            border: 1px solid grey;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .inputs button {
+            margin-left: 0px;
+            margin-top: 15px;
+            width:80px;
+            height:40px;
+            background-color:#384bb4;
+            font-size:20px;
+            color: #fff;
+            border: 1px solid gray;
+            font-family:sans-serif ;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .task-list button {
+            margin-left: 0px;
+            margin-top: 20px;
+            width:80px;
+            height:40px;
+            background-color:#384bb4;
+            font-size:20px;
+            color: #fff;
+            border: 1px solid gray;
+            font-family:sans-serif ;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .task-list {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .task-list h3 {
+            font-family: sans-serif;
+            font-size: 33px;
+            text-transform: capitalize;
+            margin-top: 40px; 
+            margin-left: 0px;
+        }
+        .task-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-list li {
+          padding: 10px;
+          margin-bottom: 5px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          position: relative;
+          
+        }
+        .task-list li {
+    position: relative;
+}
+
+.task-list li span {
+    flex: 1;
+    overflow: visible; 
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 10px;
+    position: relative;
+    border-radius: 4px;
+    z-index: 1; 
+    background: linear-gradient(to left, #54a0ff 2px, #e3f2fd 98%);
+}
+
+
+
+.task-list li span::before,
+.task-list li span::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 4px; 
+    z-index: -1;
+}
+
+ 
+.task-list li span::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0; 
+    left: 0;
+    width:6px; 
+    background-color: #5a667b;
+    border-radius: 8px; 
+}
+
+
+
+
+
+.task-list li span::after {
+    left: 2px; 
+    right: 0;
+    background-color: #d8eaf6; 
+}
+
+          .task-list li i {
+          cursor: pointer;
+          }
+        .task-list li.completed {
+            text-decoration: line-through;
+        }
+          .task-list li .checkbox {
+          width: 20px;
+          height: 20px;
+          margin-right: 10px; 
+          background-color: transparent;
+          }
+
+          .task-list li i.bi-trash {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-color: #d8eaf6; 
+    padding: 5px;
+    border-radius: 50%;
+    z-index: 2;
+    color: #000; 
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+     <h1>TodoS</h1>
+
+        <div class="inputs">
+          <h2><span class="bold">Create</span> <span class="lighter">Task</span></h2>
+            <input type="text" placeholder="What needs to be done?" id="inp"><br>
+            <button onclick="AddTask()">Add</button><br>
+        </div>
+        <div class="task-list">
+          <h2><span class="bold">My</span> <span class="lighter">Tasks</span></h2>
+            <ul id="taskList"></ul>
+            <button>Save</button><br>
+        </div>
+    </div>
+    <script>
+        let inputs = document.getElementById("inp");
+        let taskList = document.getElementById("taskList");
+
+        function AddTask() {
+            if (inputs.value === "") {
+                alert("Please enter the task.");
+            } else {
+                let newTask = document.createElement("li");
+                newTask.innerHTML = `
+                    <input type="checkbox" class="checkbox" onchange="toggleTask(this)">
+                    <span>${inputs.value}</span>
+                    <i class="bi bi-trash" onclick="deleteTask(this)"></i>
+                `;
+                taskList.appendChild(newTask);
+                inputs.value = "";
+            }
+        }
+
+        function deleteTask(element) {
+            element.parentNode.remove();
+        }
+
+        function toggleTask(checkbox) {
+            let task = checkbox.parentNode;
+            task.classList.toggle('completed', checkbox.checked);
+        }
+
+    </script>
+</body>
+</html>
